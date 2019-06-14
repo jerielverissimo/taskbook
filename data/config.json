@@ -1,0 +1,9 @@
+{
+  "configuration": {
+    "default": {
+      "taskbookDerictory": "~",
+      "displayCompleteTasks": true,
+      "displayProgressOverview": true
+    }
+  }
+}
