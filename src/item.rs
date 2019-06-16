@@ -1,12 +1,11 @@
-use chrono::{DateTime, Local, TimeZone};
+use chrono::{DateTime, Local};
 
-use super::board::Board;
 use super::options::Options;
 
 pub struct Item {
     pub description: String,
     pub is_starred: bool,
-    pub boards: Vec<Board>,
+    pub boards: Vec<String>,
     _id: i32,
     _date: DateTime<Local>,
     _timestamp: i64,

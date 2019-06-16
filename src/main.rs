@@ -1,13 +1,17 @@
-#[use_macro]
-extern crate serde;
-
 mod board;
 mod config;
 mod item;
 mod note;
 mod options;
+mod render;
+mod storage;
 mod task;
+mod taskbook;
 
 fn main() {
-    println!("Hello, world!");
+    let taskbook = taskbook::Taskbook::new();
+    let conf = config::Config::new();
+
+    println!("{:?}", conf);
+    println!("{:?}", taskbook);
 }

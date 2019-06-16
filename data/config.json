@@ -4,6 +4,7 @@
       "taskbookDerictory": "~",
       "displayCompleteTasks": true,
       "displayProgressOverview": true
-    }
+    },
+    "custom": {}
   }
 }
