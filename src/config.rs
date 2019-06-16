@@ -1,5 +1,5 @@
 use std::env;
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::prelude::*;
 use std::path::{Path, PathBuf};
 
@@ -8,23 +8,23 @@ use serde::{Deserialize, Serialize};
 const DEFAULT_CONFIG: &'static str = "data/config.json";
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Default {
+pub struct Default {
     #[serde(rename = "taskbookDerictory")]
-    taskbook_derictory: String,
+    pub taskbook_derictory: PathBuf,
     #[serde(rename = "displayCompleteTasks")]
-    display_complete_tasks: bool,
+    pub display_complete_tasks: bool,
     #[serde(rename = "displayProgressOverview")]
-    display_progress_overview: bool,
+    pub display_progress_overview: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Configuration {
-    default: Default,
+pub struct Configuration {
+    pub default: Default,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Options {
-    configuration: Configuration,
+    pub configuration: Configuration,
 }
 
 #[derive(Clone, Debug)]
@@ -57,14 +57,14 @@ impl Config {
             .starts_with("~")
         {
             config.configuration.default.taskbook_derictory =
-                self._formart_taskbook_dir(config.configuration.default.taskbook_derictory);
+                self._formart_taskbook_dir(config.configuration.default.taskbook_derictory)
         }
 
         config
     }
 
-    fn _formart_taskbook_dir(&self, path: String) -> String {
-        env::home_dir().unwrap().to_str().unwrap().to_string()
+    fn _formart_taskbook_dir(&self, path: PathBuf) -> PathBuf {
+        env::home_dir().unwrap()
     }
 
     fn _ensure_config_file(&self) {
@@ -76,6 +76,7 @@ impl Config {
         let mut contents = String::new();
         data.read_to_string(&mut contents).unwrap();
 
+        fs::create_dir(env::home_dir().unwrap().join(".taskbook"));
         let mut file = File::create(&self._config_file).unwrap();
         file.write_all(contents.as_bytes()).unwrap();
 

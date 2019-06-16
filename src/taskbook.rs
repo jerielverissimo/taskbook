@@ -12,7 +12,7 @@ impl Taskbook {
         }
     }
 
-    fn _archive(&self) {
-        self._storage.get_archive()
-    }
+    //fn _archive(&self) {
+    //self._storage.get_archive()
+    /*}*/
 }
