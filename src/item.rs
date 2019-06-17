@@ -1,6 +1,6 @@
-use chrono::{DateTime, Local};
-
 use super::options::Options;
+
+use chrono::{DateTime, Local};
 
 pub struct Item {
     pub description: String,

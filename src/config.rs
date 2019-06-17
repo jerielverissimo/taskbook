@@ -76,7 +76,7 @@ impl Config {
         let mut contents = String::new();
         data.read_to_string(&mut contents).unwrap();
 
-        fs::create_dir(env::home_dir().unwrap().join(".taskbook"));
+        fs::create_dir(env::home_dir().unwrap().join(".taskbook")).unwrap();
         let mut file = File::create(&self._config_file).unwrap();
         file.write_all(contents.as_bytes()).unwrap();
 
