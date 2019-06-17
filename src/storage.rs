@@ -100,7 +100,7 @@ impl Storage {
         self._temp_dir.join(tmp_file_name)
     }
 
-    /* fn get(&self) -> Item {*/
+    /*  fn get(&self) -> Vec<Box<Item>> {*/
     //let item: Item;
     //if self._main_storage_file.exists() {
     //let mut contents = String::new();
