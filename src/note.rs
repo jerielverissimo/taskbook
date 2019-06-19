@@ -2,7 +2,9 @@ use super::item::Item;
 use super::options::Options;
 
 use chrono::{DateTime, Local};
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Note {
     pub description: String,
     pub is_starred: bool,
@@ -13,7 +15,7 @@ pub struct Note {
     _is_task: bool,
 }
 
-impl Item for Note {
+impl Note {
     fn new(options: &Options) -> Self {
         Note {
             _is_task: false,

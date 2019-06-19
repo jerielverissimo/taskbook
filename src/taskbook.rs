@@ -7,9 +7,12 @@ pub struct Taskbook {
 
 impl Taskbook {
     pub fn new() -> Self {
-        Taskbook {
+        let task = Taskbook {
             _storage: Storage::new(),
-        }
+        };
+        let res = task._storage.get();
+        println!("{:#?}", res);
+        task
     }
 
     //fn _archive(&self) {

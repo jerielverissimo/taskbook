@@ -2,7 +2,9 @@ use super::item::Item;
 use super::options::Options;
 
 use chrono::{DateTime, Local};
+use serde::{Deserialize, Serialize};
 
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Task {
     pub is_complete: bool,
     pub in_progress: bool,
@@ -16,7 +18,7 @@ pub struct Task {
     _is_task: bool,
 }
 
-impl Item for Task {
+impl Task {
     fn new(options: &Options) -> Self {
         Task {
             is_complete: options.is_complete | false,

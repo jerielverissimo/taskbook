@@ -1,5 +1,10 @@
-use super::options::Options;
+use super::note::Note;
+use super::task::Task;
 
-pub trait Item {
-    fn new(options: &Options) -> Self;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Item {
+    TypeTask(Task),
+    TypeNote(Note),
 }

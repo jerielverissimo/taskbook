@@ -100,13 +100,14 @@ impl Storage {
         self._temp_dir.join(tmp_file_name)
     }
 
-    /*  fn get(&self) -> Vec<Box<Item>> {*/
-    //let item: Item;
-    //if self._main_storage_file.exists() {
-    //let mut contents = String::new();
-    //let mut file = fs::File::open(&self._main_storage_file).unwrap();
-    //file.read_to_string(&mut contents).unwrap();
-    //}
-    //item
-    /*}*/
+    pub fn get(&self) -> Vec<Box<Item>> {
+        let mut items = Vec::new();
+        if self._main_storage_file.exists() {
+            let mut contents = String::new();
+            let mut file = fs::File::open(&self._main_storage_file).unwrap();
+            file.read_to_string(&mut contents).unwrap();
+            items = serde_json::from_str(&contents).unwrap();
+        }
+        items
+    }
 }
