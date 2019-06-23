@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use super::item::Item;
 use super::options::Options;
 
@@ -32,5 +34,14 @@ impl Task {
             description: options.description.clone(),
             boards: Vec::new(),
         }
+    }
+}
+
+impl Item for Task {
+    fn is_task(&self) -> bool {
+        self._is_task
+    }
+    fn as_any(&self) -> &dyn Any {
+        self
     }
 }

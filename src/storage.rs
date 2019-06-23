@@ -6,6 +6,7 @@ use std::fs;
 use std::io::prelude::*;
 use std::path::PathBuf;
 
+use serde_traitobject as s;
 use uuid::Uuid;
 
 #[derive(Debug)]
@@ -39,8 +40,40 @@ impl Storage {
         storage
     }
 
-    pub fn get_archive(&self) {
-        unimplemented!()
+    pub fn get(&self) -> Vec<s::Box<dyn Item>> {
+        let mut items: Vec<s::Box<dyn Item>> = Vec::new();
+        if self._main_storage_file.exists() {
+            let mut contents = String::new();
+            let mut file = fs::File::open(&self._main_storage_file).unwrap();
+            file.read_to_string(&mut contents).unwrap();
+            items = serde_json::from_str(&contents).unwrap();
+        }
+        items
+    }
+
+    pub fn get_archive(&self) -> Vec<s::Box<dyn Item>> {
+        let mut archive: Vec<s::Box<dyn Item>> = Vec::new();
+        if self._archive_file.exists() {
+            let mut contents = String::new();
+            let mut file = fs::File::open(&self._archive_file).unwrap();
+            file.read_to_string(&mut contents).unwrap();
+            archive = serde_json::from_str(&contents).unwrap();
+        }
+        archive
+    }
+
+    pub fn set(&self, data: String) {
+        let tmp_storage_file = self._get_temp_file(&self._main_storage_file);
+
+        fs::write(&tmp_storage_file, data).unwrap();
+        fs::rename(tmp_storage_file, &self._main_storage_file).unwrap();
+    }
+
+    pub fn set_archive(&self, archive: String) {
+        let tmp_archive_file = self._get_temp_file(&self._archive_file);
+
+        fs::write(&tmp_archive_file, archive).unwrap();
+        fs::rename(tmp_archive_file, &self._archive_file).unwrap();
     }
 
     fn _main_dir(&self) -> PathBuf {
@@ -91,23 +124,12 @@ impl Storage {
         Uuid::new_v4().to_string()
     }
 
-    fn _get_temp_file(&self, file_path: PathBuf) -> PathBuf {
+    fn _get_temp_file(&self, file_path: &PathBuf) -> PathBuf {
         let ramdom_string = self._get_random_hex_string();
         let tmp_file_name = file_path
             .strip_prefix(".")
             .unwrap()
             .join(format!(".TEMP-{}", ramdom_string));
         self._temp_dir.join(tmp_file_name)
-    }
-
-    pub fn get(&self) -> Vec<Box<Item>> {
-        let mut items = Vec::new();
-        if self._main_storage_file.exists() {
-            let mut contents = String::new();
-            let mut file = fs::File::open(&self._main_storage_file).unwrap();
-            file.read_to_string(&mut contents).unwrap();
-            items = serde_json::from_str(&contents).unwrap();
-        }
-        items
     }
 }
