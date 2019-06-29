@@ -1,5 +1,5 @@
 use super::config::*;
-use super::item::Item;
+use super::item::Items;
 
 use std::env;
 use std::fs;
@@ -40,8 +40,8 @@ impl Storage {
         storage
     }
 
-    pub fn get(&self) -> Vec<s::Box<dyn Item>> {
-        let mut items: Vec<s::Box<dyn Item>> = Vec::new();
+    pub fn get(&self) -> Vec<Items> {
+        let mut items: Vec<Items> = Vec::new();
         if self._main_storage_file.exists() {
             let mut contents = String::new();
             let mut file = fs::File::open(&self._main_storage_file).unwrap();
@@ -51,8 +51,8 @@ impl Storage {
         items
     }
 
-    pub fn get_archive(&self) -> Vec<s::Box<dyn Item>> {
-        let mut archive: Vec<s::Box<dyn Item>> = Vec::new();
+    pub fn get_archive(&self) -> Vec<Items> {
+        let mut archive = Vec::new();
         if self._archive_file.exists() {
             let mut contents = String::new();
             let mut file = fs::File::open(&self._archive_file).unwrap();

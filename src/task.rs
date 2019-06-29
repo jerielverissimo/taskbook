@@ -1,6 +1,3 @@
-use std::any::Any;
-
-use super::item::Item;
 use super::options::Options;
 
 use chrono::{DateTime, Local};
@@ -21,7 +18,7 @@ pub struct Task {
 }
 
 impl Task {
-    fn new(options: &Options) -> Self {
+    pub fn new(options: &Options) -> Self {
         Task {
             is_complete: options.is_complete | false,
             in_progress: options.in_progress | false,
@@ -34,14 +31,5 @@ impl Task {
             description: options.description.clone(),
             boards: Vec::new(),
         }
-    }
-}
-
-impl Item for Task {
-    fn is_task(&self) -> bool {
-        self._is_task
-    }
-    fn as_any(&self) -> &dyn Any {
-        self
     }
 }

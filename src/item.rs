@@ -1,8 +1,10 @@
-use std::any::Any;
+use super::note::Note;
+use super::task::Task;
 
-pub trait Item:
-    std::fmt::Debug + serde_traitobject::Serialize + serde_traitobject::Deserialize
-{
-    fn is_task(&self) -> bool;
-    fn as_any(&self) -> &dyn Any;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Items {
+    TaskItem(Task),
+    NoteItem(Note),
 }

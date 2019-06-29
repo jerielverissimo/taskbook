@@ -1,6 +1,3 @@
-use std::any::Any;
-
-use super::item::Item;
 use super::options::Options;
 
 use chrono::{DateTime, Local};
@@ -28,14 +25,5 @@ impl Note {
             is_starred: options.is_starred | false,
             boards: Vec::new(),
         }
-    }
-}
-
-impl Item for Note {
-    fn is_task(&self) -> bool {
-        self._is_task
-    }
-    fn as_any(&self) -> &dyn Any {
-        self
     }
 }

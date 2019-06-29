@@ -8,3 +8,25 @@ pub struct Options {
     pub in_progress: bool,
     pub priority: u8,
 }
+
+impl Options {
+    pub fn new(
+        id: i32,
+        description: String,
+        is_starred: bool,
+        boards: Vec<super::board::Board>,
+        is_complete: bool,
+        in_progress: bool,
+        priority: u8,
+    ) -> Self {
+        Self {
+            id,
+            description,
+            is_starred,
+            boards,
+            is_complete,
+            in_progress,
+            priority,
+        }
+    }
+}
