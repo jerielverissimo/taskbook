@@ -3,10 +3,10 @@ use super::options::Options;
 use chrono::{DateTime, Local};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Note {
     pub description: String,
-    pub is_starred: bool,
+    pub starred: bool,
     pub boards: Vec<String>,
     _id: i32,
     _date: DateTime<Local>,
@@ -22,8 +22,14 @@ impl Note {
             _date: Local::now(),
             _timestamp: Local::now().timestamp(),
             description: options.description.clone(),
-            is_starred: options.is_starred | false,
+            starred: options.is_starred | false,
             boards: Vec::new(),
         }
+    }
+}
+
+impl super::item::Item for Note {
+    fn is_starred(&self) -> bool {
+        self.starred
     }
 }

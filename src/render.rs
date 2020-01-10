@@ -1,15 +1,9 @@
 use super::config::{Config, Options};
-use super::item::Items;
+use super::item::{Item, Items};
 
-use chrono::{Date, Local};
+use chrono::{Date, DateTime, Local};
 
 use colored::*;
-
-pub enum Priorites {
-    One,
-    Two,
-    Three,
-}
 
 #[derive(Debug)]
 pub struct Render {
@@ -28,7 +22,7 @@ impl Render {
         boards.into_iter().map(|x| x.bright_black()).collect()
     }
 
-    fn _is_board_complete(&self, items: Vec<Items>) -> bool {
+    fn _is_board_complete(&self, items: Vec<&Items>) -> bool {
         let (tasks, complete, notes) = self._get_item_stats(items);
         tasks == complete && notes == 0
     }
@@ -44,12 +38,12 @@ impl Render {
         }
     }
 
-    fn _get_corralation(&self, items: Vec<Items>) -> ColoredString {
+    fn _get_correlation(&self, items: Vec<&Items>) -> ColoredString {
         let (tasks, complete, _) = self._get_item_stats(items);
         format!("[${}/${}]", tasks, complete).bright_black()
     }
 
-    fn _get_item_stats(&self, items: Vec<Items>) -> (i32, i32, i32) {
+    fn _get_item_stats(&self, items: Vec<&Items>) -> (i32, i32, i32) {
         let (mut tasks, mut complete, mut notes) = (0, 0, 0);
 
         items.into_iter().for_each(|item| match item {
@@ -64,26 +58,35 @@ impl Render {
         (tasks, complete, notes)
     }
 
-    fn _get_star(&self, item: Items) -> ColoredString {
-        match item {
-            Items::TaskItem(task) => {
-                if task.is_starred {
-                    "★".yellow()
-                } else {
-                    "".normal()
-                }
+    fn _get_star(&self, item: &Items) -> ColoredString {
+        item.do_action(|i: Box<&dyn Item>| {
+            if i.is_starred() {
+                return "★".yellow();
+            } else {
+                return "".normal();
             }
-            Items::NoteItem(note) => {
-                if note.is_starred {
-                    "★".yellow()
-                } else {
-                    "".normal()
-                }
-            }
-        }
+        })
     }
 
-    pub fn teste(&self, items: Items) -> ColoredString {
-        self._get_star(items)
+    fn _build_title(
+        &self,
+        key: DateTime<Local>,
+        items: Vec<&Items>,
+    ) -> (ColoredString, ColoredString) {
+        let title: ColoredString = if key.to_string() == Local::now().to_string() {
+            ColoredString::from(
+                format!(
+                    "{} {}",
+                    key.to_string().underline(),
+                    "'[Today]'".bright_black()
+                )
+                .as_str(),
+            )
+        } else {
+            key.to_string().underline()
+        };
+        let correlation = self._get_correlation(items);
+
+        (title, correlation)
     }
 }
